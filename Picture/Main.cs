@@ -19,9 +19,9 @@ namespace Picture
         {
             InitializeComponent();
 
-            path = WriteReadSettings();
-            if (path != null & path != "")
-                pBxPicture.Image = Image.FromFile(path);
+            SetImage();
+
+            SetComboBoxItem();
         }
 
         private void btLoadPicture_Click(object sender, EventArgs e)
@@ -70,6 +70,54 @@ namespace Picture
             }
 
             return _path;
+        }
+
+        private void SetImage()
+        {
+            path = WriteReadSettings();
+            if (path != null & path != "")
+                pBxPicture.Image = Image.FromFile(path);
+        }
+
+        private void SetComboBoxItem()
+        {
+            var _displayWays = new List<DisplayWays>() {
+                new DisplayWays() {Id = 1, Way = "Zoom"},
+                new DisplayWays() {Id = 2, Way = "CenterImage"},
+                new DisplayWays() {Id = 3, Way = "Normal"},
+                new DisplayWays() {Id = 4, Way = "StretchImage"},
+                new DisplayWays() {Id = 5, Way = "AutoSize"}
+            };
+
+
+            cmbView.DataSource = _displayWays;
+            cmbView.DisplayMember = "Way";
+            cmbView.ValueMember = "Id";
+        }
+
+        private void cmbView_SelectedValueChanged(object sender, EventArgs e)
+        {
+            switch (cmbView.SelectedValue)
+            {
+                case 1:
+                    pBxPicture.SizeMode = PictureBoxSizeMode.Zoom;
+                    break;
+                case 2:
+                    pBxPicture.SizeMode = PictureBoxSizeMode.CenterImage;
+                    break;
+                case 3:
+                    pBxPicture.SizeMode = PictureBoxSizeMode.Normal;
+                    break;
+                case 4:
+                    pBxPicture.SizeMode = PictureBoxSizeMode.StretchImage;
+                    break;
+                case 5:
+                    pBxPicture.SizeMode = PictureBoxSizeMode.AutoSize;
+                    break;
+                default:
+                    pBxPicture.SizeMode = PictureBoxSizeMode.Zoom;
+                    break;
+            }
         }
     }
 }
